@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # config valid for current version and patch releases of Capistrano
-lock '~> 3.12.1'
+lock '~> 3.18.1'
 
 set :application, 'production_demo'
 set :repo_url, 'git@github.com:Deanout/production_demo.git'
