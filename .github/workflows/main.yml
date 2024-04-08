@@ -20,20 +20,31 @@ jobs:
 
       - name: Install dependencies
         run: |
+          set -e  # Exit on failure
           gem install bundler
           bundle install --jobs 4 --retry 3
 
-      - name: Set permissions for SSH directory and key
+      - name: Upload SSH key (encrypted)
+        uses: actions/upload-artifact@v2
+        with:
+          name: ssh-key
+          path: ~/.ssh/id_rsa  # Assuming the key is already added securely to your repository (not tracked in git)
+
+      - name: Download SSH key artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ssh-key
+
+      - name: Add SSH key with permissions (restricted)
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh  # Set strict permissions on the directory
+          mv downloaded/ssh-key ~/.ssh/id_rsa  # Downloaded from artifact
+          chmod 600 ~/.ssh/id_rsa  # Set strict permissions on the key
 
-      # - name: Deploy with Capistrano
-      #   run: |
-      #     cap production deploy
-      - name: testing deployment
-       run: |
-          ls
-          pwd
-          
+      - name: Deploy with Capistrano (using SSH_PRIVATE_KEY env var)
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          set -e  # Exit on failure
+          cap production deploy
