@@ -23,12 +23,6 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
 
-      # - name: Set up SSH
-      #   uses: webfactory/ssh-agent@v0.5.3
-      #   with:
-          # ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     ssh-known-hosts: github.com
-
       - name: Set permissions for SSH directory and key
         run: |
           mkdir -p ~/.ssh
