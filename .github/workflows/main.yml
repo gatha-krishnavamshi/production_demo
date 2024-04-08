@@ -31,4 +31,5 @@ jobs:
 
       - name: Deploy with Capistrano
         run: |
-          bundle exec cap production deploy
+          cap production deploy
+          
