@@ -29,7 +29,11 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Deploy with Capistrano
-        run: |
-          cap production deploy
+      # - name: Deploy with Capistrano
+      #   run: |
+      #     cap production deploy
+      - name: testing deployment
+       run: |
+          ls
+          pwd
           
