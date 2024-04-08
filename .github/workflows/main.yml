@@ -3,7 +3,7 @@ name: Deploy Rails App
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -23,19 +23,18 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-known-hosts: github.com
-          copy-to-ssh-directory: true
-          copy-to: /home/runner/.ssh/id_rsa
-  
+      # - name: Set up SSH
+      #   uses: webfactory/ssh-agent@v0.5.3
+      #   with:
+          # ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     ssh-known-hosts: github.com
+
       - name: Set permissions for SSH directory and key
         run: |
-          chmod 700 $HOME/.ssh
-          chmod 600 $HOME/.ssh/id_rsa
-  
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: Deploy with Capistrano
         run: |
           bundle exec cap production deploy
