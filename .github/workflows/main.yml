@@ -3,7 +3,7 @@ name: Deploy Rails App
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
