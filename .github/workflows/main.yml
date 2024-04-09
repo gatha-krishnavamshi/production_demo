@@ -30,10 +30,6 @@ jobs:
 
       - name: Deploy with Capistrano
         run: |
-<<<<<<< HEAD
-          bundle exec cap production deploy
-=======
-          pwd
-          ls
-          bundle exec cap production deploy
->>>>>>> b92b0ef (new)
+           pwd
+           ls
+           bundle exec cap production deploy
