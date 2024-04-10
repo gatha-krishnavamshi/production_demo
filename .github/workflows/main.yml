@@ -1,4 +1,5 @@
 name: Deploy Rails App
+
 on:
   push:
     branches:
@@ -21,18 +22,29 @@ jobs:
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
+
       - name: Set permissions for SSH directory and key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-      - name: Build assets with npm
+
+      - name: Install Node.js 14.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.x
+
+      - name: Install npm dependencies and build
         run: |
-          npm install
+          npm ci
           npm run build
+
+      - name: Set Python 2 Path
+        run: |
+          echo "PYTHON=/usr/bin/python2" >> $GITHUB_ENV
 
       - name: Deploy with Capistrano
         run: |
-           pwd
-           ls
-           bundle exec cap production deploy
+          pwd
+          ls
+          bundle exec cap production deploy
