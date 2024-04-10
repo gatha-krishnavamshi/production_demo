@@ -34,10 +34,11 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Install npm dependencies and build
-        run: |
-          npm ci
-          npm run build
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run npm build
+        run: npm run build
 
       - name: Set Python 2 Path
         run: |
